@@ -5,9 +5,11 @@
 #[macro_export]
 macro_rules! impl_vfs_dir_default {
     () => {
+        /*
         fn read_at(&self, _offset: u64, _buf: &mut [u8]) -> $crate::VfsResult<usize> {
             $crate::__priv::ax_err!(IsADirectory)
         }
+        */
 
         fn write_at(&self, _offset: u64, _buf: &[u8]) -> $crate::VfsResult<usize> {
             $crate::__priv::ax_err!(IsADirectory)
@@ -38,11 +40,12 @@ macro_rules! impl_vfs_non_dir_default {
         fn lookup(
             self: $crate::__priv::Arc<Self>,
             _path: &str,
-        ) -> $crate::VfsResult<$crate::VfsNodeRef> {
+            _flags: i32,
+        ) -> $crate::VfsResult<($crate::VfsNodeRef, alloc::string::String)> {
             $crate::__priv::ax_err!(NotADirectory)
         }
 
-        fn create(&self, _path: &str, _ty: $crate::VfsNodeType) -> $crate::VfsResult {
+        fn create(&self, _path: &str, _ty: $crate::VfsNodeType, _uid: u32, _gid: u32, _mode: i32) -> $crate::VfsResult {
             $crate::__priv::ax_err!(NotADirectory)
         }
 
